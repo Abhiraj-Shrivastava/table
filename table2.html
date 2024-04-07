@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editable Table</title>
+    <style>
+        
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+           
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 6px 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50; 
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+
+    <script>
+        
+        function EditableTable() {
+            const headings = [
+                'Onboarding Call',
+                'Google Search Console Access',
+                'Google Analytics Access',
+                'Website Access',
+                'Technical Audit',
+                'Anchor Text and Semantic Analysis',
+                'Competitor Analysis',
+                'Anchor Text / URL Mapping',
+                'Google Data Studio Report + Local Reporting Suite',
+                'Site Level Optimization',
+                'On Page Optimization',
+                'Content Creation',
+                'Content Publishing',
+                'Premium Press Release',
+                'Authority Niche Placements',
+                'Review Management',
+                'Index Links',
+                'Video Recap'
+            ];
+
+            
+            const initialData = headings.map(heading => ({
+                [heading]: Array(10).fill('')
+            }));
+
+            const [tableData, setTableData] = React.useState(initialData);
+
+            const handleChange = (e, rowIndex, colIndex) => {
+                const newData = [...tableData];
+                newData[rowIndex][headings[rowIndex]][colIndex] = e.target.value; 
+                setTableData(newData);
+            };
+
+            const downloadCsv = () => {
+                console.log(tableData)
+            };
+
+            return (
+                React.createElement('div', null, [
+                    React.createElement('button', { onClick: downloadCsv }, 'Send'),
+                    React.createElement('table', null, [
+                        React.createElement('tbody', null,
+                            headings.map((heading, rowIndex) =>
+                                React.createElement('tr', { key: rowIndex }, [
+                                    React.createElement('td', null, heading),
+                                    Array.from({ length: 10 }, (_, colIndex) =>
+                                        React.createElement('td', null,
+                                            React.createElement('input', {
+                                                type: 'text',
+                                                value: tableData[rowIndex][heading][colIndex],
+                                                onChange: e => handleChange(e, rowIndex, colIndex)
+                                            })
+                                        )
+                                    )
+                                ])
+                            )
+                        ),
+                    ]),
+                ])
+            );
+        }
+
+       
+        ReactDOM.render(React.createElement(EditableTable), document.getElementById('root'));
+    </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Data to API</title>
+</head>
+<body>
+    <h1>Response Headers:</h1>
+    <pre id="responseHeaders"></pre>
+
+    <script>
+        
+        async function postData() {
+            const url = 'https://chimpu.xyz/api/post.php';
+            const data = { phonenumber: '917225051627' }; 
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+
+                    const headers = response.headers;
+                    const headersText = [...headers.entries()].map(entry => `${entry[0]}: ${entry[1]}`).join('\n');
+                    document.getElementById('responseHeaders').textContent = headersText;
+                } else {
+                    console.error('Failed to fetch data:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        
+        postData();
+    </script>
+</body>
+</html>
